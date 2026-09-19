@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="Vertex OS - نظام تشغيل تجريبي داخل المتصفح">
+  <title>Vertex OS</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="security.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div id="bootScreen" class="boot-screen" aria-live="polite">
+    <div class="boot-logo">V</div>
+    <h1>Vertex OS</h1>
+    <div class="boot-loader"><span></span></div>
+    <p>Starting Vertex OS...</p>
+  </div>
+
+  <div id="desktop" class="desktop" aria-label="سطح مكتب Vertex OS">
+    <div class="desktop-brand">
+      <span>VERTEX</span>
+      <strong>OS</strong>
+    </div>
+
+    <div class="desktop-icons" aria-label="تطبيقات سطح المكتب">
+      <button class="desktop-icon" data-open="files">
+        <span class="app-icon icon-files">📁</span>
+        <span>الملفات</span>
+      </button>
+      <button class="desktop-icon" data-open="notes">
+        <span class="app-icon icon-notes">📝</span>
+        <span>الملاحظات</span>
+      </button>
+      <button class="desktop-icon" data-open="terminal">
+        <span class="app-icon icon-terminal">⌨️</span>
+        <span>Terminal</span>
+      </button>
+      <button class="desktop-icon" data-open="settings">
+        <span class="app-icon icon-settings">⚙️</span>
+        <span>الإعدادات</span>
+      </button>
+    </div>
+
+    <section id="windowLayer" class="window-layer" aria-label="نوافذ التطبيقات">
+      <article class="os-window" data-window="files" aria-hidden="true">
+        <header class="window-titlebar">
+          <div class="window-title"><span>📁</span><strong>الملفات</strong></div>
+          <div class="window-controls">
+            <button data-minimize aria-label="تصغير">—</button>
+            <button data-close aria-label="إغلاق">×</button>
+          </div>
+        </header>
+        <div class="window-body files-app">
+          <aside class="files-sidebar">
+            <button class="file-location active" data-folder="home">🏠 الرئيسية</button>
+            <button class="file-location" data-folder="documents">📄 المستندات</button>
+            <button class="file-location" data-folder="projects">💻 المشاريع</button>
+            <button class="file-location" data-folder="pictures">🖼️ الصور</button>
+          </aside>
+          <div class="files-content">
+            <div class="files-toolbar">
+              <strong id="folderTitle">الرئيسية</strong>
+              <span id="folderCount">4 عناصر</span>
+            </div>
+            <div id="fileGrid" class="file-grid"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="os-window calculator-window" data-window="calculator" aria-hidden="true">
+        <header class="window-titlebar">
+          <div class="window-title"><span>🧮</span><strong>الآلة الحاسبة</strong></div>
+          <div class="window-controls">
+            <button data-minimize aria-label="تصغير">—</button>
+            <button data-close aria-label="إغلاق">×</button>
+          </div>
+        </header>
+        <div class="window-body calculator-app">
+          <div id="calcExpression" class="calc-expression">0</div>
+          <div id="calcResult" class="calc-result">0</div>
+          <div class="calc-grid">
+            <button data-calc="clear" class="calc-special">C</button>
+            <button data-calc="(">(</button>
+            <button data-calc=")">)</button>
+            <button data-calc="/" class="calc-op">÷</button>
+            <button data-calc="7">7</button>
+            <button data-calc="8">8</button>
+            <button data-calc="9">9</button>
+            <button data-calc="*" class="calc-op">×</button>
+            <button data-calc="4">4</button>
+            <button data-calc="5">5</button>
+            <button data-calc="6">6</button>
+            <button data-calc="-" class="calc-op">−</button>
+            <button data-calc="1">1</button>
+            <button data-calc="2">2</button>
+            <button data-calc="3">3</button>
+            <button data-calc="+" class="calc-op">+</button>
+            <button data-calc="0" class="calc-zero">0</button>
+            <button data-calc=".">.</button>
+            <button data-calc="equals" class="calc-equals">=</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="os-window" data-window="notes" aria-hidden="true">
+        <header class="window-titlebar">
+          <div class="window-title"><span>📝</span><strong>الملاحظات</strong></div>
+          <div class="window-controls">
+            <button data-minimize aria-label="تصغير">—</button>
+            <button data-close aria-label="إغلاق">×</button>
+          </div>
+        </header>
+        <div class="window-body notes-app">
+          <div class="notes-toolbar">
+            <strong>Vertex Notes</strong>
+            <span id="notesStatus">محفوظ تلقائياً</span>
+          </div>
+          <textarea id="notesArea" spellcheck="false" placeholder="اكتب أي شيء هنا..."></textarea>
+        </div>
+      </article>
+
+      <article class="os-window terminal-window" data-window="terminal" aria-hidden="true">
+        <header class="window-titlebar">
+          <div class="window-title"><span>⌨️</span><strong>Vertex Terminal</strong></div>
+          <div class="window-controls">
+            <button data-minimize aria-label="تصغير">—</button>
+            <button data-close aria-label="إغلاق">×</button>
+          </div>
+        </header>
+        <div class="window-body terminal-app" dir="ltr">
+          <div id="terminalOutput" class="terminal-output"></div>
+          <form id="terminalForm" class="terminal-input-row" autocomplete="off">
+            <span>vertex@os:~$</span>
+            <input id="terminalInput" type="text" aria-label="Terminal command" spellcheck="false">
+          </form>
+        </div>
+      </article>
+
+      <article class="os-window" data-window="settings" aria-hidden="true">
+        <header class="window-titlebar">
+          <div class="window-title"><span>⚙️</span><strong>الإعدادات</strong></div>
+          <div class="window-controls">
+            <button data-minimize aria-label="تصغير">—</button>
+            <button data-close aria-label="إغلاق">×</button>
+          </div>
+        </header>
+        <div class="window-body settings-app">
+          <section class="settings-section">
+            <h3>المظهر</h3>
+            <div class="setting-row">
+              <div><strong>الوضع</strong><small>غيّر شكل Vertex OS</small></div>
+              <div class="choice-group">
+                <button class="choice active" data-theme="dark">داكن</button>
+                <button class="choice" data-theme="midnight">ليلي</button>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><strong>الخلفية</strong><small>اختر خلفية سطح المكتب</small></div>
+              <div class="wallpaper-options">
+                <button class="wallpaper active" data-wallpaper="aurora" aria-label="Aurora"></button>
+                <button class="wallpaper space" data-wallpaper="space" aria-label="Space"></button>
+                <button class="wallpaper grid" data-wallpaper="grid" aria-label="Grid"></button>
+              </div>
+            </div>
+          </section>
+          <section class="settings-section about-card">
+            <div class="about-logo">V</div>
+            <div>
+              <h3>Vertex OS 1.0</h3>
+              <p>نظام تشغيل تجريبي يعمل بالكامل داخل المتصفح.</p>
+              <small>Vertex Systems AI © 2026</small>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article class="os-window about-window" data-window="about" aria-hidden="true">
+        <header class="window-titlebar">
+          <div class="window-title"><span>V</span><strong>حول Vertex OS</strong></div>
+          <div class="window-controls">
+            <button data-close aria-label="إغلاق">×</button>
+          </div>
+        </header>
+        <div class="window-body about-app">
+          <div class="about-logo large">V</div>
+          <h2>Vertex OS</h2>
+          <p>نسخة 1.0</p>
+          <span>نظام تشغيل ويب تجريبي من Vertex Systems AI</span>
+        </div>
+      </article>
+    </section>
+
+    <div id="startMenu" class="start-menu" aria-hidden="true">
+      <div class="start-header">
+        <div class="start-avatar">V</div>
+        <div>
+          <strong>Vertex OS</strong>
+          <small>المملكة العربية السعودية</small>
+        </div>
+      </div>
+
+      <div class="start-search">
+        <span>⌕</span>
+        <input id="appSearch" type="search" placeholder="ابحث عن تطبيق..." autocomplete="off">
+      </div>
+
+      <div class="start-section-title">التطبيقات</div>
+      <div id="startApps" class="start-apps">
+        <button class="start-app" data-name="الملفات files" data-open="files"><span>📁</span><b>الملفات</b></button>
+        <button class="start-app" data-name="الحاسبة calculator" data-open="calculator"><span>🧮</span><b>الحاسبة</b></button>
+        <button class="start-app" data-name="الملاحظات notes" data-open="notes"><span>📝</span><b>الملاحظات</b></button>
+        <button class="start-app" data-name="terminal الطرفية" data-open="terminal"><span>⌨️</span><b>Terminal</b></button>
+        <button class="start-app" data-name="الإعدادات settings" data-open="settings"><span>⚙️</span><b>الإعدادات</b></button>
+        <button class="start-app" data-name="حول about" data-open="about"><span>ⓘ</span><b>حول النظام</b></button>
+      </div>
+
+      <div class="start-footer">
+        <button id="aboutBtn" class="start-footer-btn">ⓘ حول</button>
+        <button id="restartBtn" class="start-footer-btn">↻ إعادة تشغيل</button>
+      </div>
+    </div>
+
+    <footer class="taskbar">
+      <button id="startBtn" class="taskbar-button start-button" aria-label="فتح قائمة البداية">V</button>
+      <div class="taskbar-divider"></div>
+      <div id="taskbarApps" class="taskbar-apps">
+        <button class="taskbar-button pinned" data-open="files" title="الملفات">📁</button>
+        <button class="taskbar-button pinned" data-open="calculator" title="الحاسبة">🧮</button>
+        <button class="taskbar-button pinned" data-open="notes" title="الملاحظات">📝</button>
+        <button class="taskbar-button pinned" data-open="terminal" title="Terminal">⌨️</button>
+      </div>
+      <div class="taskbar-spacer"></div>
+      <button id="clockButton" class="clock-button" type="button">
+        <strong id="clockTime">--:--</strong>
+        <span id="clockDate">--/--/----</span>
+      </button>
+    </footer>
+
+    <div id="toast" class="toast" role="status"></div>
+  </div>
+</body>
+</html>
